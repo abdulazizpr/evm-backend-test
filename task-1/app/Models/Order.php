@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
@@ -46,6 +48,17 @@ class Order extends Model
         'total',
         'status',
     ];
+
+    /**
+     * Bootstrap the model and its traits.
+     *
+     * @return void
+    */
+    public static function boot(): void
+    {
+        parent::boot();
+        static::generateOrderNumber();
+    }
 
     /**
      * Model relationship definition.
@@ -119,11 +132,23 @@ class Order extends Model
      *
      * @return void
     */
-    public function proccesCheckout()
+    public function proccessCheckout()
     {
         $this->total_quantities = $this->orderItems->sum('qty');
         $this->total = $this->orderItems->sum('subtotal');
 
         $this->setCheckout();
+    }
+
+    /**
+     * Method static for generate order number.
+     *
+     * @return void
+    */
+    protected static function generateOrderNumber(): void
+    {
+        self::creating(function ($model) {
+            $model->order_number = Carbon::now()->format('ymdHis').Str::upper(Str::random(6));
+        });
     }
 }
