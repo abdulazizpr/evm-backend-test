@@ -2,11 +2,16 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Concerns\HandleApiExceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use HandleApiExceptions;
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -27,14 +32,21 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Register the exception handling callbacks for the application.
+     * Render an exception into an HTTP response.
      *
-     * @return void
+     * @param \Illuminate\Http\Request $request
+     * @param \Throwable               $exception
+     *
+     * @throws \Throwable
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function register()
+    public function render($request, Throwable $exception): Response
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        if ($request->expectsJson() || Str::startsWith($request->getRequestUri(), ['/api/'])) {
+            return $this->renderApiException($exception);
+        }
+
+        return parent::render($request, $exception);
     }
 }
