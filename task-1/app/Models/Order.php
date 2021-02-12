@@ -42,7 +42,8 @@ class Order extends Model
     */
     protected $fillable = [
         'order_number',
-        'subtotal',
+        'total_quantities',
+        'total',
         'status',
     ];
 
@@ -111,5 +112,18 @@ class Order extends Model
                 $orderItem->reduceStockToProduct();
             }
         }
+    }
+
+    /**
+     * Proccess checkout
+     *
+     * @return void
+    */
+    public function proccesCheckout()
+    {
+        $this->total_quantities = $this->orderItems->sum('qty');
+        $this->total = $this->orderItems->sum('subtotal');
+
+        $this->setCheckout();
     }
 }

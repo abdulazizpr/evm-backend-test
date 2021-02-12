@@ -31,6 +31,7 @@ class OrderItem extends Model
         'name',
         'price',
         'qty',
+        'subtotal',
     ];
 
     /**

@@ -20,6 +20,7 @@ class CreateOrderItemsTable extends Migration
             $table->string('name');
             $table->bigInteger('price')->unsigned();
             $table->bigInteger('qty')->unsigned();
+            $table->bigInteger('subtotal')->unsigned();
 
             $table->timestamps();
 

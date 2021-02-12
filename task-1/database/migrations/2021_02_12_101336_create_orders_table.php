@@ -16,9 +16,9 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('order_number', 100)->unique();
-            $table->bigInteger('subtotal')->unsigned();
-            $table->string('status')->comment('Status name: checkout, paid');
-
+            $table->bigInteger('total_quantities')->unsigned()->nullable();
+            $table->bigInteger('total')->unsigned()->nullable();
+            $table->string('status')->nullable()->comment('Status name: checkout, paid');
             $table->timestamps();
         });
     }
