@@ -7,5 +7,10 @@ Solusi dari permasalahan tersebut perlu dilakukannya validasi stok di dalam sist
 Pada simulasi kali ini saya akan mencoba melakukannya ketika checkout dan anggap saja pembayaran sudah lunas untuk kebutuhan demo ini menggunakan PHPUnit.
 
 Untuk melakukan demonstrasi ini di lakukan beberapa command line berikut.
-1. composer install
-2. PHPUnit
+1. create .env file (can copy from .env.example)
+2. setting database environtment on env
+3. composer install
+4. php artisan migrate --seed
+5. php artisan key:generate
+6. php artisan optimize
+7. phpunit
