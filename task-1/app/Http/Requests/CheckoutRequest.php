@@ -48,8 +48,8 @@ class CheckoutRequest extends FormRequest
         if ($this->qty > 0 && $this->product instanceof Product) {
             $rules['qty'] .= '|max:' . $this->product->stock;
 
-            if ($this->product->qty === 0) {
-                $rules['qty'] = \str_replace('|min:1', '', $rules['qty']);
+            if ($this->product->stock === 0) {
+                $rules['qty'] = str_replace('|min:1', '', $rules['qty']);
             }
         }
 

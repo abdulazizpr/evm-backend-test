@@ -25,19 +25,21 @@ class OrderRepository
      *
      * @return \App\Models\Order
     */
-    public function checkout($request): Order
+    public function payment($request): Order
     {
         $model = $this->model->create();
 
-        $model->orderItems()->create([
-            'product_id' => $request->product_id,
-            'name' => $request->product->name,
-            'price' => $request->product->price,
-            'qty' => $request->qty,
-            'subtotal' => $request->qty * $request->product->price,
-        ]);
+        foreach ($request->products as $product) {
+            $model->orderItems()->create([
+                'product_id' => $product['id'],
+                'name' => $product['product']->name,
+                'price' => $product['product']->price,
+                'qty' => $product['qty'],
+                'subtotal' => $product['qty'] * $product['product']->price,
+            ]);
+        }
 
-        $model->proccessCheckout();
+        $model->proccessPayment();
 
         return $model;
     }

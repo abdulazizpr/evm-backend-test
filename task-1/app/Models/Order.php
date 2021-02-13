@@ -15,7 +15,7 @@ class Order extends Model
     /**
      * Status Enum
     */
-    const CHECKOUT_STATUS = 'checkout';
+    const WAITING_PAYMENT_STATUS = 'waiting_payment';
     const PAID_STATUS = 'paid';
 
     /**
@@ -23,7 +23,7 @@ class Order extends Model
      *
     */
     const STATUSES = [
-        self::CHECKOUT_STATUS,
+        self::WAITING_PAYMENT_STATUS,
         self::PAID_STATUS,
     ];
 
@@ -72,13 +72,13 @@ class Order extends Model
     }
 
     /**
-     * Set checkout status
+     * Set waiting payment
      *
      * @return void
     */
-    public function setCheckout(): void
+    public function setWaitingPayment(): void
     {
-        $this->status = self::CHECKOUT_STATUS;
+        $this->status = self::WAITING_PAYMENT_STATUS;
         $this->save();
     }
 
@@ -91,6 +91,8 @@ class Order extends Model
     {
         $this->status = self::PAID_STATUS;
         $this->save();
+
+        $this->reduceAllProductStocks();
     }
 
     /**
@@ -98,9 +100,9 @@ class Order extends Model
      *
      * @return bool
     */
-    public function isCheckout(): bool
+    public function isWaitingPayment(): bool
     {
-        return $this->status === self::CHECKOUT_STATUS;
+        return $this->status === self::WAITING_PAYMENT_STATUS;
     }
 
     /**
@@ -128,16 +130,16 @@ class Order extends Model
     }
 
     /**
-     * Proccess checkout
+     * Proccess payment
      *
      * @return void
     */
-    public function proccessCheckout()
+    public function proccessPayment()
     {
         $this->total_quantities = $this->orderItems->sum('qty');
         $this->total = $this->orderItems->sum('subtotal');
 
-        $this->setCheckout();
+        $this->setPaid();
     }
 
     /**

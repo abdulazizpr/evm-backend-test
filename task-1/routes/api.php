@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/checkout', 'CheckoutController@create');
+Route::post('/payment', 'PaymentController@create');
