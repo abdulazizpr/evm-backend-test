@@ -36,6 +36,7 @@ class PaymentController extends Controller
             \DB::commit();
         } catch (Throwable $e) {
             \DB::rollback();
+            \Log::error($e);
 
             return new JsonResponse([
                 'status' => 500,

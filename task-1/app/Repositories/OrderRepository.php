@@ -41,6 +41,8 @@ class OrderRepository
 
         $model->proccessPayment();
 
+        \Log::info('Proccess Payment for order ' . $model->order_number );
+
         return $model;
     }
 }

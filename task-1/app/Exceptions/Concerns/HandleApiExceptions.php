@@ -88,6 +88,11 @@ trait HandleApiExceptions
 
         $headers['Vary'] = 'Accept-Encoding, Authorization';
 
+        if ($exception instanceof ValidationException) {
+            \Log::info('Error Validation : ');
+            \Log::info($this->convertApiExceptionToArray($exception)['errors']);
+        }
+
         return new JsonResponse(
             $this->convertApiExceptionToArray($exception),
             $this->getApiErrorCode($exception),

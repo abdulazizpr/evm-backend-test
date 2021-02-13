@@ -19,3 +19,8 @@ Untuk melakukan demonstrasi ini di lakukan beberapa tahap berikut.
 Untuk menjalankan API tersendiri di lakukan beberapa command line berikut.
 1. Run `php artisan migrate`
 2. Run `php artisan serve`
+
+Untuk mengakses log file bisa dilakukan dengan command.
+```console
+cat storage/logs/laravel.log
+```
