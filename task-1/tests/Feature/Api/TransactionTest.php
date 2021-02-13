@@ -18,7 +18,7 @@ class TransactionTest extends TestCase
     protected $endpointCheckout = '/api/checkout';
 
     /**
-     * Endpoint checkout.
+     * Endpoint payment.
      *
      * @var string
      */
@@ -33,11 +33,12 @@ class TransactionTest extends TestCase
     {
         parent::setUp();
 
+        //need seed
         $this->seed();
     }
 
     /**
-     * Test Create endpoint is success.
+     * Test Create endpoint if anys stock.
      *
      * @return void
      */
@@ -71,6 +72,43 @@ class TransactionTest extends TestCase
         $this->postJson($this->endpointCheckout, $data)
             ->assertStatus(422)
             ->assertJsonValidationErrors(['qty']);
+    }
+
+    /**
+     * Test payment endpoint if any stock.
+     *
+     * @return void
+     */
+    public function testPaymentEndpointValidationStockExpected()
+    {
+        $product = Product::find(1);
+
+        $data['products'][] = [
+            'id' => $product->getKey(),
+            'qty' => 10,
+        ];
+
+        $this->postJson($this->endpointPayment, $data)
+            ->assertStatus(200);
+    }
+
+    /**
+     * Test payment endpoint if out of stock.
+     *
+     * @return void
+     */
+    public function testPaymentEndpointValidationStockUnexpected()
+    {
+        $product = Product::find(1);
+
+        $data['products'][] = [
+            'id' => $product->getKey(),
+            'qty' => 1000,
+        ];
+
+        $this->postJson($this->endpointPayment, $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['products.0.qty']);
     }
 
     /**
