@@ -10,7 +10,7 @@ Pada simulasi kali ini saya akan mencoba melakukannya ketika checkout dan melaku
 
 Untuk melakukan demonstrasi ini di lakukan beberapa tahap berikut.
 1. create `.env` file (can copy from `.env.example`)
-2. setting database environtment on `env`
+2. Setting database environtment on `env`
 3. Run `composer install`
 5. Run `php artisan key:generate`
 6. Run `php artisan optimize`
